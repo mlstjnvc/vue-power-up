@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: review-test-smells
+description: Review of a test that tests internals, sleeps, and hits the real network.
+tags: [review, test]
+context:
+  scaffold_script: scaffold.sh

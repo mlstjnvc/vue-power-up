@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "vue-power-up",
+  "version": "1.2.3",
+  "description": "Write secure, idiomatic Vue 3 + TypeScript code with Pinia and Nuxt, guided by version-aware best practices and anti-pattern guardrails; review changes or a commit with /vue-power-up:review.",
+  "author": {
+    "name": "Milos Stojanovic"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "typescript",
+    "nuxt",
+    "pinia",
+    "composition-api",
+    "best-practices",
+    "code-review",
+    "security"
+  ]
+}

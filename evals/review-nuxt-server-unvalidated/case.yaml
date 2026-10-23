@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: review-nuxt-server-unvalidated
+description: Review of insecure Nuxt server code and config.
+tags: [review, nuxt, sec]
+context:
+  scaffold_script: scaffold.sh

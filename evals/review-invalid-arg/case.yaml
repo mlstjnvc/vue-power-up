@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: review-invalid-arg
+description: An option-like argument must be rejected before reaching git; nothing may be written.
+tags: [review, safety]
+context:
+  scaffold_script: scaffold.sh

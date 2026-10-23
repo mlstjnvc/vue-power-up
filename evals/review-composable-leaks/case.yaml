@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: review-composable-leaks
+description: Plain-language review of a leaky composable in a Vue SPA.
+tags: [review, cmps]
+context:
+  scaffold_script: scaffold.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-nuxt-api-route
+description: Nuxt server route - validated body without adding deps, createError, private runtime config, no process.env.
+tags: [write, nuxt, sec]
+context:
+  scaffold_script: scaffold.sh

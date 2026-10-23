@@ -1,0 +1,15 @@
+{
+  "name": "ml2stjnvc",
+  "owner": {
+    "name": "Milos Stojanovic"
+  },
+  "description": "Marketplace for the best development practices, guardrails and code review for Claude Code.",
+  "plugins": [
+    {
+      "name": "vue-power-up",
+      "source": "./",
+      "description": "Write secure, idiomatic Vue 3 + TypeScript code with Pinia and Nuxt; review changes or a commit with /vue-power-up:review.",
+      "category": "development"
+    }
+  ]
+}

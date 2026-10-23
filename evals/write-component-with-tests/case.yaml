@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-component-with-tests
+description: Component plus tests in an existing Vitest + Testing Library setup - behaviour tests, async waits, mocked network.
+tags: [write, test]
+context:
+  scaffold_script: scaffold.sh

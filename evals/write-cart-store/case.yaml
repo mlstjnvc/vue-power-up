@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-cart-store
+description: Pinia store + consumer component - storeToRefs, derived total, actions.
+tags: [write, pinia]
+context:
+  scaffold_script: scaffold.sh

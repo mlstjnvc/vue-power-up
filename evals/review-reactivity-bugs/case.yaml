@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: review-reactivity-bugs
+description: Plain-language review of a file seeded with reactivity and template errors.
+tags: [review, react, tpl]
+context:
+  scaffold_script: scaffold.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-typed-form-component
+description: Write mode, Vue 3.5 SPA. A v-model form component must use defineModel, typed emits, no any, and must not mutate the parent's object through the model.
+tags: [write, ts, comp]
+context:
+  scaffold_script: scaffold.sh

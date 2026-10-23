@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-composable-search
+description: Composable with reactive input, cancellation, cleanup and exposed loading/error state.
+tags: [write, cmps, react]
+context:
+  scaffold_script: scaffold.sh

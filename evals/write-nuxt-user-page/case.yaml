@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-nuxt-user-page
+description: Nuxt 4 page - setup-level useFetch with reactive URL, $fetch in submit handler, app/ dir, status handling, no in-place shallow data mutation.
+tags: [write, nuxt]
+context:
+  scaffold_script: scaffold.sh

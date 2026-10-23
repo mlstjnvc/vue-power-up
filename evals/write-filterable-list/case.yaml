@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-filterable-list
+description: List rendering with filtering - no v-if with v-for, stable keys, computed filtering, buttons, no prop mutation.
+tags: [write, react, tpl]
+context:
+  scaffold_script: scaffold.sh
