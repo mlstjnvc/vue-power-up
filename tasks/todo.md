@@ -402,3 +402,23 @@ Define the rule template, the severity model and the `rule-catalog.md` table for
 ### ✅ Checkpoint: Complete
 - [x] All SPEC Success Criteria are met, except two that need the user's environment (local-marketplace install; formal `/vue-power-up:review` eval cases with `--allow-tools Bash`)
 - [ ] **Human sign-off** (pending)
+
+---
+
+## Post-release: fixes ported from react-power-up (2026-11-26)
+
+**Description:** Port two skill gaps that react-power-up found by actually running and judging generated code. Scope agreed with the user: rules, evals and docs only. **No eval runs, and no type-check harness** (user's instruction). No SPEC change: recorded here and in RATIONALE only.
+
+**Done:**
+- [x] **VUE-TEST-007** (`warn`, `testing.md`): when Vitest has no `globals: true`, register cleanup in the setup file: `afterEach(() => cleanup())` for `@testing-library/vue`, and `enableAutoUnmount(afterEach)` for `@vue/test-utils`. Sources checked: Testing Library Vue setup `#vitest`, API `#cleanup`, and VTU API `#enableAutoUnmount` (read directly).
+- [x] **VUE-TPL-007** (`warn`, `templates.md`): name repeated row actions after their item, with an `aria-label` that starts with the visible text. Sources: WCAG 2.2 Understanding 2.4.6 and 2.5.3 (`#intent`, checked).
+- [x] Catalog index regenerated; RATIONALE entries for both (with how react-power-up found them, and "not verified by running"); a `SKILL.md` testing bullet and the reference-map row (160 lines).
+- [x] **New eval `write-tests-no-globals`:** a copy of `write-component-with-tests` with `globals` off. The scaffold drops `vitest/globals` and its existing test imports `test`/`expect`. New graders: `setup-cleanup` (cleanup in `vitest.setup.ts`) and `no-globals-switch`. The scaffold was executed once to confirm it builds the project; no eval was run.
+- [x] **`write-filterable-list` gains `delete-names-task`** (`llm` judge on `TaskList.vue`: the row delete control's name must identify its task). Existing graders unchanged.
+- [x] README: 91 rules (TPL 7, TEST 7), 36 cases (12 write). RATIONALE limitations count: 91.
+
+**Checks run:** `claude plugin validate .` ✓ · `check_catalog.py` ✓ (91 rules) · `check_links.py` ✓ (75 pages, testing.md and templates.md) · `bash -n` + one scaffold execution ✓.
+
+**Not done (left for you):**
+- [ ] Run `write-tests-no-globals` and `write-filterable-list` (`--runs 3`). The new `delete-names-task` grader may fail on runs that the old graders passed. That's the intended signal.
+- [ ] Optional: actually run the generated tests with Vitest, and type-check outputs with a coverage check (`vue-tsc --listFilesOnly`). This is what found both gaps in react-power-up, but your instruction excluded it here.

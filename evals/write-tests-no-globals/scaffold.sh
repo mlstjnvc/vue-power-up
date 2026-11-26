@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Vue 3.5 SPA with Vitest + Testing Library + VTU configured (no node_modules).
+# Vitest WITHOUT `globals: true`: Testing Library can't auto-clean up, so the setup must register cleanup (VUE-TEST-007).
+set -euo pipefail
+mkdir -p src/components src/__tests__
+cat > package.json <<'JSON'
+{
+  "name": "app", "private": true, "type": "module",
+  "scripts": { "dev": "vite", "test": "vitest run", "typecheck": "vue-tsc --noEmit" },
+  "dependencies": { "vue": "^3.5.13" },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1", "typescript": "~5.6.3", "vite": "^6.0.5", "vue-tsc": "^2.2.0",
+    "vitest": "^3.0.5", "jsdom": "^26.0.0", "@vue/test-utils": "^2.4.6",
+    "@testing-library/vue": "^8.1.0", "@testing-library/user-event": "^14.6.1", "@testing-library/jest-dom": "^6.6.3"
+  }
+}
+JSON
+cat > vitest.config.ts <<'TS'
+import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
+export default defineConfig({ plugins: [vue()], test: { environment: 'jsdom', setupFiles: ['./vitest.setup.ts'] } })
+TS
+printf "import '@testing-library/jest-dom/vitest'\n" > vitest.setup.ts
+cat > tsconfig.json <<'JSON'
+{ "compilerOptions": { "target": "ES2020", "module": "ESNext", "moduleResolution": "Bundler", "strict": true, "isolatedModules": true, "verbatimModuleSyntax": true, "jsx": "preserve", "noEmit": true, "lib": ["ES2020", "DOM"] }, "include": ["src/**/*.ts", "src/**/*.vue", "*.ts"] }
+JSON
+cat > src/components/ExistingButton.vue <<'VUE'
+<script setup lang="ts">
+defineEmits<{ press: [] }>()
+</script>
+<template><button type="button" @click="$emit('press')"><slot /></button></template>
+VUE
+cat > src/__tests__/ExistingButton.test.ts <<'TS'
+import { expect, test } from 'vitest'
+import { render, screen } from '@testing-library/vue'
+import userEvent from '@testing-library/user-event'
+import ExistingButton from '../components/ExistingButton.vue'
+
+test('emits press when clicked', async () => {
+  const { emitted } = render(ExistingButton, { slots: { default: 'Go' } })
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Go' }))
+  expect(emitted().press).toHaveLength(1)
+})
+TS
+cat > src/api.ts <<'TS'
+export async function subscribe(email: string): Promise<void> {
+  const res = await fetch('/api/subscribe', { method: 'POST', body: JSON.stringify({ email }) })
+  if (!res.ok) throw new Error('Subscription failed')
+}
+TS

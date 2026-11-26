@@ -126,3 +126,31 @@ app.unmount() // asserts cleanup ran
 ```
 
 **Applies:** Vue ≥ 3.0 · **Exceptions:** none.
+
+---
+
+### VUE-TEST-007 · Clean up mounted components when Vitest has no global `afterEach`  `warn`
+
+**Why:** Neither test library unmounts on its own in every setup:
+- **`@testing-library/vue`** runs `cleanup` automatically only when the runner injects a global `afterEach`. Jest does; **Vitest does only with `globals: true`.** Without it, every `render` stays in the document, so later tests find earlier components ("Found multiple elements…"), results depend on test order, and memory leaks.
+- **`@vue/test-utils`** never destroys `mount`ed wrappers by itself. Leftover watchers, timers and `window` listeners keep running, and `attachTo` mounts stay in the DOM. `enableAutoUnmount(afterEach)` destroys them after each test.
+
+Before writing tests, check `vitest.config.*` for `globals: true` and the setup files for `cleanup` / `enableAutoUnmount`. If neither is there, add the hook to the existing setup file: one top-level hook covers every test file. Don't turn on `globals` just for this, because it changes the project's config and its TS types (`vitest/globals`).
+**Source:** https://testing-library.com/docs/vue-testing-library/setup#vitest · https://testing-library.com/docs/vue-testing-library/api#cleanup · https://test-utils.vuejs.org/api/#enableAutoUnmount
+
+```ts
+// ❌ vitest.config.ts has no `globals: true`, and the setup never cleans up
+// vitest.setup.ts
+import '@testing-library/jest-dom/vitest'
+
+// ✅ vitest.setup.ts
+import '@testing-library/jest-dom/vitest'
+import { afterEach } from 'vitest'
+import { cleanup } from '@testing-library/vue'
+import { enableAutoUnmount } from '@vue/test-utils'
+
+afterEach(() => cleanup())      // Testing Library: render()
+enableAutoUnmount(afterEach)    // Vue Test Utils: mount()
+```
+
+**Applies:** Vitest without `globals: true`, or any runner without a global `afterEach` (`@testing-library/vue` ≥ 6, `@vue/test-utils` ≥ 2.0) · **Exceptions:** Jest, or Vitest with `globals: true`, for Testing Library. Register only the hook for the libraries the project uses. A suite that unmounts every wrapper itself (`wrapper.unmount()`) doesn't need `enableAutoUnmount`.

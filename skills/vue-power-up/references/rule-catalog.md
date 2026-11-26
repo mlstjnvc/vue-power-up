@@ -100,7 +100,8 @@ One row per rule. **Ref** is the reference file that holds the full rule.
 | VUE-TPL-003 | `info` | Keep template expressions simple; move logic to `computed` | Vue ≥ 3.0 | [`templates.md`](templates.md) |
 | VUE-TPL-004 | `warn` | Don't call expensive or side-effecting functions in templates | Vue ≥ 3.0 | [`templates.md`](templates.md) |
 | VUE-TPL-005 | `warn` | Use native interactive elements for interactive UI | Vue ≥ 3.0 | [`templates.md`](templates.md) |
-| VUE-TPL-006 | `warn` | Give every form control an accessible label | Vue ≥ 3.0 (`useId`: Vue ≥ 3.5; earlier versions use a stable id from props or a counter that's stable on the server) | [`templates.md`](templates.md) |
+| VUE-TPL-006 | `warn` | Give every form control an accessible label | Vue ≥ 3.0 (`useId`: Vue ≥ 3.5 only; on Vue < 3.5 **don't call `useId`**: wrap the input in its `<label>`, which needs no id, or take an `id` prop) | [`templates.md`](templates.md) |
+| VUE-TPL-007 | `warn` | Name repeated row actions after their item | Vue ≥ 3.0 | [`templates.md`](templates.md) |
 | VUE-CMPS-001 | `warn` | Name composables `useXxx`, in a `useXxx.ts` file | Vue ≥ 3.0 | [`composables.md`](composables.md) |
 | VUE-CMPS-002 | `warn` | Accept refs and getters (`MaybeRefOrGetter`) and read them with `toValue` inside reactive scopes | Vue ≥ 3.3 (`toValue`, `MaybeRefOrGetter`) | [`composables.md`](composables.md) |
 | VUE-CMPS-003 | `warn` | Return a plain object of refs | Vue ≥ 3.0 | [`composables.md`](composables.md) |
@@ -154,3 +155,4 @@ One row per rule. **Ref** is the reference file that holds the full rule.
 | VUE-TEST-004 | `warn` | Use `@nuxt/test-utils` for code that depends on the Nuxt runtime | Nuxt ≥ 3.0 | [`testing.md`](testing.md) |
 | VUE-TEST-005 | `warn` | Mock the network at the boundary, never call real APIs | any | [`testing.md`](testing.md) |
 | VUE-TEST-006 | `info` | Test composables directly, or through a host component when they need lifecycle or inject | Vue ≥ 3.0 | [`testing.md`](testing.md) |
+| VUE-TEST-007 | `warn` | Clean up mounted components when Vitest has no global `afterEach` | Vitest without `globals: true`, or any runner without a global `afterEach` (`@testing-library/vue` ≥ 6, `@vue/test-utils` ≥ 2.0) | [`testing.md`](testing.md) |

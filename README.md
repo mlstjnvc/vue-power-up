@@ -170,7 +170,7 @@ What keeps it small:
 
 ## Rules
 
-89 rules in 10 domains. Every rule has:
+91 rules in 10 domains. Every rule has:
 - a stable id (`VUE-<DOMAIN>-NNN`) and a severity (`error` / `warn` / `info`)
 - an official source link
 - a ❌/✅ example
@@ -183,13 +183,13 @@ Rules are version-gated: Claude never suggests an API your installed version lac
 | `TS` | 11 | typed props/emits/refs/slots/inject, generics, no `any`, `strict` + `vue-tsc` | [typescript-sfc.md](skills/vue-power-up/references/typescript-sfc.md) |
 | `COMP` | 9 | `defineModel`, no prop mutation, naming, `defineExpose`, scoped styles | [components.md](skills/vue-power-up/references/components.md) |
 | `REACT` | 10 | destructuring, `.value`, computed vs watch, watcher sources and cleanup | [reactivity.md](skills/vue-power-up/references/reactivity.md) |
-| `TPL` | 6 | `v-if`+`v-for`, keys, template logic, accessible controls and labels | [templates.md](skills/vue-power-up/references/templates.md) |
+| `TPL` | 7 | `v-if`+`v-for`, keys, template logic, accessible controls, labels and row-action names | [templates.md](skills/vue-power-up/references/templates.md) |
 | `CMPS` | 9 | composable naming, inputs, return shape, call context, SSR safety | [composables.md](skills/vue-power-up/references/composables.md) |
 | `PINIA` | 7 | `storeToRefs`, setup-store state, store calls outside components, SSR, Nuxt | [pinia.md](skills/vue-power-up/references/pinia.md) |
 | `NUXT` | 17 | data fetching, keys, Nuxt 4 shallow data, `useState`, hydration, server validation and auth, runtime config, middleware, plugins | [nuxt.md](skills/vue-power-up/references/nuxt.md) |
 | `SEC` | 8 | XSS (`v-html`, URLs, templates), open redirects, secrets, SSRF, cookies, CSRF | [security.md](skills/vue-power-up/references/security.md) |
 | `PERF` | 6 | `shallowRef`, lazy loading and hydration, long lists, `v-memo` | [performance.md](skills/vue-power-up/references/performance.md) |
-| `TEST` | 6 | behaviour tests, async waits, Pinia isolation, `@nuxt/test-utils`, mocking | [testing.md](skills/vue-power-up/references/testing.md) |
+| `TEST` | 7 | behaviour tests, async waits, Pinia isolation, `@nuxt/test-utils`, mocking, cleanup without Vitest globals | [testing.md](skills/vue-power-up/references/testing.md) |
 
 The full index is in [`rule-catalog.md`](skills/vue-power-up/references/rule-catalog.md). The reasoning behind each rule is in [`docs/RATIONALE.md`](docs/RATIONALE.md#5-rules-by-id).
 
@@ -205,11 +205,11 @@ sh tests/precheck.test.sh           # review-command precondition script
 
 ## Running the evals
 
-35 cases in [`evals/`](evals/), in `claude plugin eval` format:
+36 cases in [`evals/`](evals/), in `claude plugin eval` format:
 
 | Family | Cases | What they check |
 |---|---|---|
-| `write-*` | 11 | Generated code: required APIs present, anti-patterns absent, version-gating (Vue 3.3 vs 3.5), Nuxt 4 layout, and two **trap** prompts (render user HTML, redirect to `?next=`) that must produce the safe variant plus an explanation |
+| `write-*` | 12 | Generated code: required APIs present, anti-patterns absent, version-gating (Vue 3.3 vs 3.5), Nuxt 4 layout, test cleanup without Vitest `globals`, and two **trap** prompts (render user HTML, redirect to `?next=`) that must produce the safe variant plus an explanation |
 | `review-*` (plain language) | 7 | Reviews of seeded files find the expected rule ids and the right verdict, and never edit |
 | `review-*` (`/vue-power-up:review`) | 6 | Not a repo, invalid argument, uncommitted changes, a commit hash, a root commit, a clean tree. No git writes and no file edits |
 | `trigger-*` | 11 | The skill fires for Vue/Nuxt/Pinia requests (6) and doesn't for React/Svelte/Python/Express/Angular (5) |

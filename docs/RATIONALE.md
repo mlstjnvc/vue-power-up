@@ -554,6 +554,13 @@ Each entry covers **why the rule is included**, **why it has this severity**, an
 - **`useId()` (3.5+)** is recommended because hand-made ids often differ between server and client, causing hydration mismatches in SSR apps.
 - **The pre-3.5 alternative is explicit** (wrap the input in its `<label>`, no id needed). In the T15 final pass, one of three Vue 3.3 runs matched `useId(`. Spelling out "on Vue < 3.5 don't call `useId`", with a working alternative, removes the temptation. The version graders also now ignore comment lines, since a comment like "defineModel needs 3.4" is correct behaviour. Afterwards: 3/3 runs passed.
 
+#### VUE-TPL-007 · Item-specific names for repeated row actions
+- **Ported from react-power-up (2026-11-26).** There, a list output labelled every control but named its expand button just "Show notes" in every row. An accessibility judge failed it, and no rule covered it. vue-power-up has the same gap: VUE-TPL-005's example names an icon-only button after its item, but nothing says that text buttons repeated per row ("Delete") need it too.
+- **`warn`:** the control works and has a name. The defect is that identical names are ambiguous (WCAG 2.4.6). That hurts, but doesn't block use. It matches TPL-005/006, which are also `warn`.
+- **"Starts with the visible text":** an `aria-label` that drops the visible words breaks voice control (WCAG 2.5.3). Prefixing keeps both working.
+- **Eval:** `write-filterable-list` gains `delete-names-task`. The request asks for a delete control on every row, and its existing graders only checked that some label existed somewhere in the file.
+- **Not verified by running:** written without an eval run (user's instruction). Run `write-filterable-list` before relying on the new grader.
+
 ### Composables (`VUE-CMPS`, `references/composables.md`)
 
 #### VUE-CMPS-001 · `use` prefix
@@ -835,6 +842,14 @@ All `SEC` rules are `error` except cookies and CSRF (`warn`, below).
 - **`info`.**
 - From the Vue testing guide's composables section. The `withSetup` helper is the documented pattern for lifecycle-dependent composables.
 
+#### VUE-TEST-007 · Cleanup when Vitest has no global `afterEach`
+- **Ported from react-power-up (2026-11-26).** There, a generated test file type-checked and scored 1.00, but when actually run under Vitest 3 of 4 tests failed ("Found multiple elements"), because nothing cleaned up between tests. The Vue libraries have the same gap. `@testing-library/vue` auto-cleans only when the runner injects a global `afterEach` (Vitest: `globals: true`), and Vue Test Utils never destroys `mount`ed wrappers without `enableAutoUnmount`.
+- **Why the evals never caught it:** `write-component-with-tests` sets `globals: true`, so auto-cleanup works there. The new case `write-tests-no-globals` is the same request without `globals`.
+- **`warn`, not `error`:** the failure shows up right away as red or flaky tests, not as a production bug. It still makes tests order-dependent and leaks memory.
+- **Fix in the setup file, not via `globals: true`:** both are documented. One hook in the existing setup file is the smaller change. Turning on globals changes the project's config and ambient types, which a test-writing task shouldn't do unasked.
+- **Eval grader:** `setup-cleanup` requires `cleanup` or `enableAutoUnmount` in `vitest.setup.ts`. Graders can't OR across files, so a correct per-test-file hook would fail it. That's accepted because the rule and both libraries' docs name the setup file, and the prompt points at the existing setup.
+- **Not verified by running:** the ✅ example and the new case were written without an eval run or a type-check harness (user's instruction). Run them before relying on them.
+
 ## 6. Evaluation design
 
 ### Four layers of verification
@@ -881,7 +896,7 @@ In the development environment (an agent shell with its own sandbox), `claude pl
 | **`allowed-tools` pre-approves but doesn't restrict** (A6). `git show *` would also pre-approve `git show --output=…`. | The argument is checked before use, write flags are forbidden in the skill text, and evals assert no write-capable git calls and no file edits. |
 | **The review command needs Bash permission** for its precheck. Sessions that deny Bash can't run it. | Documented in README. Plain-language reviews ("review this file") need only read tools. |
 | **POSIX shell required** for `precheck.sh`. | Claude Code on Windows uses Git Bash. Documented in README. |
-| **Rule coverage is finite.** 89 rules don't cover every Vue bug. | Reviews report non-catalog bugs as `GENERAL` (D14). The catalog can grow without renumbering (A4). |
+| **Rule coverage is finite.** 91 rules don't cover every Vue bug. | Reviews report non-catalog bugs as `GENERAL` (D14). The catalog can grow without renumbering (A4). |
 | **Version detection without `node_modules` or a lockfile uses the range minimum.** A project might really run a newer version. | That direction is safe: assuming *older* never produces code that fails to compile. The upgrade path is mentioned instead. |
 | **Docs drift.** Vue, Nuxt and Pinia APIs change. | Every rule has an Applies range and a source. `tests/check_links.py` catches moved pages. Re-verify rules on each major release. |
 | **Eval scores here are single runs** (D15). | The user's full run (3 runs, with and without the plugin) is authoritative and gives variance and the plugin's added value. |

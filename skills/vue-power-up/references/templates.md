@@ -135,3 +135,26 @@ const emailId = useId()
 <!-- ✅ Vue < 3.5: implicit label, no id needed -->
 <label>Email <input v-model="email" type="email" autocomplete="email" /></label>
 ```
+
+---
+
+### VUE-TPL-007 · Name repeated row actions after their item  `warn`
+
+**Why:** In a list, every row's "Delete", "Edit" or "Details" button gets the same accessible name. Screen-reader users who tab through the buttons, or pull up a list of them, hear the same words over and over and can't tell which item each one acts on. Labels must describe their purpose (WCAG 2.4.6). Put the item in the name: as visually hidden text, or as an `aria-label` that **starts with the visible text**, so voice-control users can still say what they see (WCAG 2.5.3 Label in Name). The same goes for icon-only buttons (VUE-TPL-005).
+**Source:** https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html#intent · https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html#intent
+
+```vue
+<!-- ❌ every row announces just "Delete" -->
+<li v-for="task in tasks" :key="task.id">
+  {{ task.title }}
+  <button type="button" @click="emit('delete', task.id)">Delete</button>
+</li>
+
+<!-- ✅ the name starts with the visible text and names the item -->
+<li v-for="task in tasks" :key="task.id">
+  {{ task.title }}
+  <button type="button" :aria-label="`Delete ${task.title}`" @click="emit('delete', task.id)">Delete</button>
+</li>
+```
+
+**Applies:** Vue ≥ 3.0 · **Exceptions:** a single action on the page, or a button whose visible text already names the item ("Delete Buy milk"). Keep a toggling `aria-label` in step with the visible text (for example "Hide notes for …" when open).

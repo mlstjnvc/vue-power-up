@@ -64,7 +64,8 @@ Trace every new data flow from its source (user input, URL, route params, API re
   - test what the user sees and does, not internal state
   - await async work properly, never `setTimeout`
   - use a fresh Pinia per test
-  - mock the network.
+  - mock the network
+  - on Vitest without `globals: true`, make sure the setup file registers cleanup (`cleanup` for Testing Library, `enableAutoUnmount(afterEach)` for Vue Test Utils).
 - **If there's no test setup,** say so and offer to add one. Don't install anything without consent.
 
 ### 7. Self-check
@@ -148,7 +149,7 @@ Load a file when the task touches its domain:
 | [`references/typescript-sfc.md`](references/typescript-sfc.md) | Any `.vue` file or TS code using Vue APIs: props, emits, refs, template refs, provide/inject, slots, generics |
 | [`references/components.md`](references/components.md) | Creating or changing components: v-model, prop flow, exposed methods, splitting, naming, styles |
 | [`references/reactivity.md`](references/reactivity.md) | Any state: `ref`/`reactive`, `computed`, `watch`, side-effect cleanup |
-| [`references/templates.md`](references/templates.md) | Writing templates: lists, conditionals, template logic, interactive elements, form labels |
+| [`references/templates.md`](references/templates.md) | Writing templates: lists, conditionals, template logic, interactive elements, form labels, accessible names for repeated row actions |
 | [`references/composables.md`](references/composables.md) | Writing or calling a composable (`use*`), or any SSR-sensitive shared state |
 | [`references/pinia.md`](references/pinia.md) | Defining or using Pinia stores, including in router guards, plugins and Nuxt pages |
 | [`references/nuxt.md`](references/nuxt.md) | Any Nuxt project: data fetching, SSR state, hydration, links, file locations, server routes, runtime config, middleware, plugins |

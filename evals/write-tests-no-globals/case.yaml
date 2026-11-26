@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-tests-no-globals
+description: "Same request as write-component-with-tests, but Vitest has no `globals: true` - the setup file must register Testing Library cleanup (VUE-TEST-007), without switching globals on."
+tags: [write, test]
+context:
+  scaffold_script: scaffold.sh
